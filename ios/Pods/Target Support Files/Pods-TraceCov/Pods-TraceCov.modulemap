@@ -1,0 +1,6 @@
+module Pods_TraceCov {
+  umbrella header "Pods-TraceCov-umbrella.h"
+
+  export *
+  module * { export * }
+}

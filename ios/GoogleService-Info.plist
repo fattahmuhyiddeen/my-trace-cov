@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>3198314753-0iqtq38kphsrnn78vu8h2h74dkg409fg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.3198314753-0iqtq38kphsrnn78vu8h2h74dkg409fg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>3198314753-sc422661p7tdihljg4o6m0g4skg8jper.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAFK4_hZTft7bCvx_Y1zInqRB9n-o7HLc8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>3198314753</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.appfes.tracecov</string>
+	<key>PROJECT_ID</key>
+	<string>tracecov-22e9a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tracecov-22e9a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:3198314753:ios:91836334c842849f201300</string>
+	<key>DATABASE_URL</key>
+	<string>https://tracecov-22e9a.firebaseio.com</string>
+</dict>
+</plist>
