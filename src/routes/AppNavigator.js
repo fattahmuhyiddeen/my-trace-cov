@@ -13,7 +13,7 @@ import PinScreen from '@screens/Pin'
 
 const AuthStackNav = createStackNavigator()
 export const AuthNavigator = () => (
-    <AuthStackNav.Navigator initialRouteName="Phone">
+    <AuthStackNav.Navigator initialRouteName="Permission">
         <AuthStackNav.Screen options={{ headerShown: false }} name="Phone" component={PhoneScreen} />
         <AuthStackNav.Screen options={{ headerShown: false }} name="Start" component={StartScreen} />
         <AuthStackNav.Screen options={{ headerShown: false }} name="Consent" component={ConsentScreen} />

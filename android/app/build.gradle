@@ -189,6 +189,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-ble-peripheral') // <--- add this
     implementation project(':react-native-ble-plx')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion

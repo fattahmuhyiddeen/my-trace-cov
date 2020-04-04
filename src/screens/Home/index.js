@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Platform, PermissionsAndroid } from 'react-native'
+import { View, Text, StyleSheet, Platform, PermissionsAndroid, NativeModules } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { BleManager, Service, Characteristic } from 'react-native-ble-plx'
 // import { request, PERMISSIONS, RESULTS } from 'react-native-permissions'
@@ -8,8 +8,8 @@ import { SAView } from '@components/Container'
 import { BUnderline } from '@components/Button'
 import Colors from '@utils/colors'
 
-const onePlusX = 'c0:ee:fb:6c:5e:8e'
-const asusX = '18:31:bf:89:f0:05'
+const BLEPeripheral = NativeModules.BLEPeripheral;
+// import BLEPeripheral from 'react-native-ble-peripheral';
 
 const HomeScreen = () => {
 
@@ -41,40 +41,13 @@ const HomeScreen = () => {
         }
     }
 
-    // const reqLocPermission = () => {
-    //     try {
-    //         request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION).then(result => {
-    //             switch (result) {
-    //                 case RESULTS.UNAVAILABLE:
-    //                     console.log(
-    //                         'This feature is not available (on this device / in this context)',
-    //                     );
-    //                     break;
-    //                 case RESULTS.DENIED:
-    //                     console.log(
-    //                         'The permission has not been requested / is denied but requestable',
-    //                     );
-    //                     break;
-    //                 case RESULTS.GRANTED:
-    //                     console.log('The permission is granted');
-    //                     break;
-    //                 case RESULTS.BLOCKED:
-    //                     console.log('The permission is denied and not requestable anymore');
-    //                     break;
-    //             }
-    //         })
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-    // }
-
     const initializeBluetooth = () => {
         console.log('subscription CREATE')
         bleManager = new BleManager()
         subscription = bleManager.onStateChange((state) => {
             if (state === 'PoweredOn') {
-                console.log('bluetooth ON')
+                console.log('bluetooth ON');
+                startAdvertising();
                 setBluetoothOn(true)
                 if (Platform.OS === 'android') {
                     const permission = requestLocationPermission();
@@ -101,6 +74,33 @@ const HomeScreen = () => {
         }, true)
     }
 
+    const startAdvertising = async () => {
+        // TODO: Define where to define the uuid
+        const serviceUUID = '55c14520-9b41-4e13-a229-e29059c00e47';
+        BLEPeripheral.addService(serviceUUID, false);
+        BLEPeripheral.addCharacteristicToService(
+          serviceUUID,
+          serviceUUID,
+          128,
+          128,
+          '',
+        );
+        if (BLEPeripheral.isAdvertising) {
+          BLEPeripheral.stop();
+        }
+        BLEPeripheral.sendNotificationToDevices(serviceUUID, serviceUUID, "JJKoh");
+        BLEPeripheral.setName("JunTest");
+
+        BLEPeripheral.start()
+          .then(res => {
+            // Success
+            console.log("Successful")
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
+
     const beginBLEScan = () => {
         console.log('scan START')
         bleManager.startDeviceScan(null, null, async (error, device) => {
@@ -117,7 +117,10 @@ const HomeScreen = () => {
                     console.log('location ON')
                     setLocationOn(true)
                 }
-                console.log('scan DEVICE', device.id)
+                if (!devicesScanned.includes(device.name)) {
+                    setDevicesScanned([...devicesScanned, device.name]);
+                }
+                console.log('scan DEVICE', device.id, device.name, devicesScanned);
                 // if (devicesScanned.length > 0) {
                 //     if (devicesScanned.some(dvc => dvc.id === device.id)) {
                 //         bleManager.stopDeviceScan()
@@ -150,6 +153,7 @@ const HomeScreen = () => {
         // Save all BLE device services to state
         let connectedBLEDeviceServices = await connectedBLEDevice.services()
         connectedBLEDeviceServices = connectedBLEDeviceServices.map(service => new Service(service, bleManager))
+        // console.log({connectedBLEDeviceServices});
 
         // Save all BLE device characteristics to state
         let connectedBLEDeviceCharacteristics = await connectedBLEDeviceServices[0].characteristics()
@@ -207,16 +211,17 @@ const HomeScreen = () => {
 
     const removeSubscription = () => {
         console.log('subscription REMOVE')
-        bleManager.destroy()
-        subscription.remove()
+        // bleManager.destroy()
+        // subscription.remove()
     }
 
-    useEffect(() => {
-        initializeBluetooth()
-        return () => {
-            removeSubscription()
-        }
-    }, [initializeBluetooth, removeSubscription])
+
+    // useEffect(() => {
+    //     initializeBluetooth()
+    //     return () => {
+    //         removeSubscription()
+    //     }
+    // }, [initializeBluetooth, removeSubscription])
 
     return (
         <SAView>
