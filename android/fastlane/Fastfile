@@ -1,0 +1,17 @@
+update_fastlane
+
+default_platform(:android)
+testers = "fattahmuhyiddeen@gmail.com,adiadha94@gmail.com,eidithashim@gmail.com,ismetfitri90@gmail.com,afifahsalimi@gmail.com"
+
+platform :android do
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    firebase_app_distribution(
+        app: "1:3198314753:android:8b1c71a1dbb33a7e201300",
+        release_notes: "Please uninstall all previous version before installing this one",
+        testers: testers,
+        firebase_cli_path: "/usr/local/bin/firebase"
+    )
+    # upload_to_play_store
+  end
+end
