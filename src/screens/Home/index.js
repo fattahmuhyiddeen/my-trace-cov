@@ -8,8 +8,7 @@ import { SAView } from '@components/Container'
 import { BUnderline } from '@components/Button'
 import Colors from '@utils/colors'
 
-const BLEPeripheral = NativeModules.BLEPeripheral;
-// import BLEPeripheral from 'react-native-ble-peripheral';
+import BLEPeripheral from 'react-native-ble-peripheral';
 
 const HomeScreen = () => {
 
