@@ -34,8 +34,11 @@ const scanDevice = (timeout = 10000) => {
         clearSubscriptions();
         reject(error);
       }
-      if (scannedDevice != null) {
-        scannedDevices.add(scannedDevice);
+      if (scannedDevice !== null) {
+        console.log(scannedDevice.name, scannedDevice.serviceUUIDs);
+        if (scannedDevice.serviceUUIDs !== null) {
+          scannedDevice.serviceUUIDs.forEach((serviceID) => scannedDevices.add(serviceID));
+        }
       }
     });
   });
