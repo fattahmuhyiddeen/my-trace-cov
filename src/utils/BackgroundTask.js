@@ -2,6 +2,7 @@ import BackgroundTimer from 'react-native-background-timer';
 import { BleManager } from 'react-native-ble-plx';
 import BLEPeripheral from 'react-native-ble-peripheral';
 import AsyncStorage from '@react-native-community/async-storage';
+import config from '../config';
 
 const manager = new BleManager();
 
@@ -28,13 +29,12 @@ const setScannedDevices = async (scannedDevices) => {
   }
 };
 
-const predefinedPrefix = 'b11c9be1';
 const isValidServiceUUID = (uuid) => {
   const prefix = uuid.substring(0, 8);
-  return prefix === predefinedPrefix;
+  return prefix === config.serviceUUIDPrefix;
 };
 
-const scanDevice = (timeout = 10000) => {
+const scanDevice = (timeout) => {
   console.log('ScanDevice');
   const scannedDevices = new Set();
   return new Promise((resolve, reject) => {
@@ -90,14 +90,14 @@ const runBackgroundTask = async (name = 'TraceCov') => {
   console.log('GET ASYNC UUID', serviceUUID)
 
   // TODO - interval to trigger scan device timer
-  const scanDeviceTimer = 30000;
+  const scanDeviceTimer = config.scanDeviceTimer;
   // BackgroundTimer only runs once - consistent
   manager.stopDeviceScan();
   if (await BLEPeripheral.isAdvertising()) BLEPeripheral.stop();
   (async function () {
     BackgroundTimer.runBackgroundTimer(() => {
       // TODO: scanDevice response should be written to persistent storage
-      scanDevice().then(setScannedDevices).catch(console.log);
+      scanDevice(config.scanDeviceTimeout).then(setScannedDevices).catch(console.log);
       startAdvertise(serviceUUID, name).then(console.log).catch(console.log);
     }, scanDeviceTimer);
   }());

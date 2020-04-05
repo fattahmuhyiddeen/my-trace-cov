@@ -11,6 +11,7 @@ import { BRounded } from '@components/Button'
 import { TILine } from '@components/TextInput'
 import OtpScreen from '@screens/Otp'
 import * as userActions from '@actions/user'
+import config from '../../config';
 
 const PhoneScreen = () => {
     const [phoneNo, setPhoneNo] = useState('')
@@ -111,7 +112,7 @@ const PhoneScreen = () => {
     useEffect(() => {
         UUIDGenerator.getRandomUUID()
             .then((uuid) => {
-                const formattedUUID = `b11c9be1${uuid.substring(8,36)}`;
+                const formattedUUID = `${config.serviceUUIDPrefix}${uuid.substring(8,36)}`;
                 setServiceUuid(formattedUUID);
                 AsyncStorage.setItem('serviceUUID', formattedUUID);
             })
