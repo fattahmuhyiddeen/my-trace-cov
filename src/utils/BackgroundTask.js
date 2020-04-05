@@ -85,7 +85,6 @@ const startAdvertise = async (serviceUUID, name) => {
 };
 
 const runBackgroundTask = async (name = 'TraceCov') => {
-
   const serviceUUID = await AsyncStorage.getItem('serviceUUID')
   console.log('GET ASYNC UUID', serviceUUID)
 
