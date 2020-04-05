@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Platform, PermissionsAndroid, NativeModules } from 'react-native'
+import { View, Text, StyleSheet, Platform, PermissionsAndroid } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { BleManager, Service, Characteristic } from 'react-native-ble-plx'
-import auth from '@react-native-firebase/auth'
+import { BleManager } from 'react-native-ble-plx'
+import RNSettings from 'react-native-settings';
+import { DeviceEventEmitter } from 'react-native';
 
 import { SAView } from '@components/Container'
-import { BUnderline } from '@components/Button'
 import Colors from '@utils/colors'
-import BLEPeripheral from 'react-native-ble-peripheral';
 import BackgroundApp from '../../utils/BackgroundTask';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const HomeScreen = () => {
     const [bluetoothOn, setBluetoothOn] = useState(false)
     const [locationOn, setLocationOn] = useState(false)
-    const [devicesScanned, setDevicesScanned] = useState([])
     const [uniqueContactsNum, setUniqueContactsNum] = useState(0);
 
     let bleManager
@@ -50,10 +48,10 @@ const HomeScreen = () => {
                 if (Platform.OS === 'android') {
                     const permission = requestLocationPermission();
                     if (permission) {
-                        
+                        console.log("location ALLOWED")
                     }
                     else {
-                        console.log("location OFF")
+                        console.log("location UNALLOWED")
                         setLocationOn(false)
                     }
                 }
@@ -90,6 +88,41 @@ const HomeScreen = () => {
         subscription.remove();
     }
 
+    const resetAll = () => {
+        removeSubscription();
+        initializeBluetooth();
+        updateUniqueContacts();
+    }
+
+    const _handleGPSProviderEvent = e => {
+        if (e[RNSettings.LOCATION_SETTING] === RNSettings.ENABLED) {
+            resetAll()
+            setLocationOn(true)
+            console.log("location ON")
+        }
+        else {
+            setLocationOn(false)
+            console.log("location OFF")
+        }
+    }
+
+    useEffect(() => {
+        if (Platform.OS === 'android') {
+            RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
+                if (result == RNSettings.ENABLED) {
+                    setLocationOn(true)
+                    console.log("location ON")
+                } else {
+                    setLocationOn(false)
+                    console.log("location OFF")
+                }
+            })
+            DeviceEventEmitter.addListener(
+                RNSettings.GPS_PROVIDER_EVENT,
+                _handleGPSProviderEvent,
+            )
+        }
+    }, [])
 
     useEffect(() => {
         initializeBluetooth();
@@ -104,7 +137,7 @@ const HomeScreen = () => {
             <View style={styles.mainContainer}>
                 <View style={styles.rowContainer}>
                     <Text style={styles.text1}>Device Status</Text>
-                    <Icon
+                    {/* <Icon
                         name='ios-refresh'
                         type='ionicon'
                         color='black'
@@ -114,7 +147,7 @@ const HomeScreen = () => {
                             initializeBluetooth();
                             updateUniqueContacts();
                         }}
-                    />
+                    /> */}
                 </View>
                 <View style={{ height: 50 }} />
                 <View style={styles.rowContainer}>
