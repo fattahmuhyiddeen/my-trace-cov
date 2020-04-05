@@ -1,7 +1,6 @@
 import BackgroundTimer from 'react-native-background-timer';
 import { BleManager } from 'react-native-ble-plx';
 import BLEPeripheral from 'react-native-ble-peripheral';
-import UUIDGenerator from 'react-native-uuid-generator'
 import AsyncStorage from '@react-native-community/async-storage';
 
 const manager = new BleManager();
@@ -35,7 +34,6 @@ const isValidServiceUUID = (uuid) => {
   return prefix === predefinedPrefix;
 };
 
-// Note - backgroundtimer might only work in android
 const scanDevice = (timeout = 10000) => {
   console.log('ScanDevice');
   const scannedDevices = new Set();
@@ -91,7 +89,8 @@ const runBackgroundTask = async (name = 'TraceCov') => {
   const serviceUUID = await AsyncStorage.getItem('serviceUUID')
   console.log('GET ASYNC UUID', serviceUUID)
 
-  const scanDeviceTimer = 10000;
+  // TODO - interval to trigger scan device timer
+  const scanDeviceTimer = 30000;
   // BackgroundTimer only runs once - consistent
   manager.stopDeviceScan();
   if (await BLEPeripheral.isAdvertising()) BLEPeripheral.stop();
