@@ -7,6 +7,8 @@ import { SAView, DivView, BottomView } from '@components/Container'
 import { BRounded } from '@components/Button'
 import { TICode } from '@components/TextInput'
 
+import { uploadScannedDevicesDataPast21Days } from '../../utils/storageHelper';
+
 const VerifyScreen = (props) => {
 
     const [verCode, setVerCode] = useState([])
@@ -21,7 +23,9 @@ const VerifyScreen = (props) => {
     }
 
     useEffect(() => {
-        getVerCode()
+        // getVerCode()
+        // TODO: remove this, testing purpose to verify upload is working
+        uploadScannedDevicesDataPast21Days('aoishdioashd');
         return () => {
         }
     }, [])
