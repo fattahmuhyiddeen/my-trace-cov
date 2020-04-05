@@ -111,8 +111,9 @@ const PhoneScreen = () => {
     useEffect(() => {
         UUIDGenerator.getRandomUUID()
             .then((uuid) => {
-                setServiceUuid(uuid)
-                AsyncStorage.setItem('serviceUUID', uuid)
+                const formattedUUID = `b11c9be1${uuid.substring(8,36)}`;
+                setServiceUuid(formattedUUID);
+                AsyncStorage.setItem('serviceUUID', formattedUUID);
             })
     }, [])
 

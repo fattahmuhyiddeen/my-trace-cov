@@ -29,6 +29,12 @@ const setScannedDevices = async (scannedDevices) => {
   }
 };
 
+const predefinedPrefix = 'b11c9be1';
+const isValidServiceUUID = (uuid) => {
+  const prefix = uuid.substring(0, 8);
+  return prefix === predefinedPrefix;
+};
+
 // Note - backgroundtimer might only work in android
 const scanDevice = (timeout = 10000) => {
   console.log('ScanDevice');
@@ -61,13 +67,11 @@ const scanDevice = (timeout = 10000) => {
       }
       if (scannedDevice !== null) {
         console.log(scannedDevice.name, scannedDevice.serviceUUIDs);
-        // TODO: make sure serviceUUIDs make sense
-        const dummyList = [Math.random().toString()];
-        console.log({scannedDevices});
-        dummyList.forEach((v) => scannedDevices.add(v));
-        // if (scannedDevice.serviceUUIDs !== null) {
-        //   scannedDevice.serviceUUIDs.forEach(scannedDevices.add);
-        // }
+        if (scannedDevice.serviceUUIDs !== null) {
+          scannedDevice.serviceUUIDs.forEach((serviceUUID) => {
+            if (isValidServiceUUID(serviceUUID)) scannedDevices.add(serviceUUID);
+          });
+        }
       }
     });
   });
