@@ -1,6 +1,7 @@
 import BackgroundTimer from 'react-native-background-timer';
 import { BleManager } from 'react-native-ble-plx';
 import BLEPeripheral from 'react-native-ble-peripheral';
+import UUIDGenerator from 'react-native-uuid-generator'
 
 const manager = new BleManager();
 
@@ -54,13 +55,23 @@ const startAdvertise = async (serviceUUID, name) => {
 };
 
 const uuidDummy = '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d';
-const runBackgroundTask = async (serviceUUID=uuidDummy, name='TraceCov') => {
+
+const getUuid = async () => {
+  const uuid = await UUIDGenerator.getRandomUUID()
+  return uuid
+}
+
+const runBackgroundTask = async (name = 'TraceCov') => {
+
+  const serviceUUID = await getUuid()
   const scanDeviceTimer = 10000;
+
+  console.log('UUID', serviceUUID)
 
   // BackgroundTimer only runs once - consistent
   manager.stopDeviceScan();
   if (await BLEPeripheral.isAdvertising()) BLEPeripheral.stop();
-  (async function() {
+  (async function () {
     BackgroundTimer.runBackgroundTimer(() => {
       // TODO: scanDevice response should be written to persistent storage
       scanDevice().then(console.log).catch(console.log);
@@ -74,7 +85,7 @@ export default class BackgroundTask {
   static isRunning = false;
 
   static scheduleBackgroundProcessingTask() {
-    if(BackgroundTask.isRunning) {
+    if (BackgroundTask.isRunning) {
       return;
     }
     BackgroundTask.isRunning = true; // make this to true

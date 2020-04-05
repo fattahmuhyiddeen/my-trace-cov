@@ -315,7 +315,11 @@ PODS:
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
+  - react-native-background-timer (2.2.0):
+    - React
   - react-native-ble-manager (7.2.0):
+    - React
+  - react-native-ble-peripheral (2.0.1):
     - React
   - react-native-ble-plx (1.1.1):
     - React
@@ -437,7 +441,9 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-ble-manager (from `../node_modules/react-native-ble-manager`)
+  - react-native-ble-peripheral (from `../node_modules/react-native-ble-peripheral`)
   - react-native-ble-plx (from `../node_modules/react-native-ble-plx`)
   - react-native-ble-plx-swift (from `../node_modules/react-native-ble-plx`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -525,8 +531,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-background-timer:
+    :path: "../node_modules/react-native-background-timer"
   react-native-ble-manager:
     :path: "../node_modules/react-native-ble-manager"
+  react-native-ble-peripheral:
+    :path: "../node_modules/react-native-ble-peripheral"
   react-native-ble-plx:
     :path: "../node_modules/react-native-ble-plx"
   react-native-ble-plx-swift:
@@ -620,7 +630,9 @@ SPEC CHECKSUMS:
   React-jsi: bc8166d6833cdcb0848c80710b26ce63fad2c099
   React-jsiexecutor: 8bf0b2707f05865113415088c398a7f98c0cf546
   React-jsinspector: 8e5913c4c6c54f0d3f9c9fc630c465a89cded65d
+  react-native-background-timer: 53c0e028a95d58b1f4498ef7ce152b6c6b337595
   react-native-ble-manager: fda5f6b20092f2b2d356676bd1f3dc7065bb4329
+  react-native-ble-peripheral: 9e487ba9ba5e8ead30b45afba66ee17fe470e349
   react-native-ble-plx: 304c7bee074a05581672c9990f375b3906808718
   react-native-ble-plx-swift: eb64f02b988becb84a60164aba9fab5d6ddb6dc8
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
