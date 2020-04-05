@@ -3,15 +3,13 @@ import { View, Text, StyleSheet, Platform, PermissionsAndroid, NativeModules } f
 import { Icon } from 'react-native-elements'
 import { BleManager, Service, Characteristic } from 'react-native-ble-plx'
 // import { request, PERMISSIONS, RESULTS } from 'react-native-permissions'
-
 import { SAView } from '@components/Container'
 import { BUnderline } from '@components/Button'
 import Colors from '@utils/colors'
-
 import BLEPeripheral from 'react-native-ble-peripheral';
+import BackgroundApp from '../../utils/BackgroundTask';
 
 const HomeScreen = () => {
-
     const [bluetoothOn, setBluetoothOn] = useState(false)
     const [locationOn, setLocationOn] = useState(false)
     const [devicesScanned, setDevicesScanned] = useState([])
@@ -21,6 +19,8 @@ const HomeScreen = () => {
 
     let characteristicWithResponseListener
     let characteristicWithoutResponseListener
+
+    BackgroundApp.scheduleBackgroundProcessingTask();
 
     const requestLocationPermission = async () => {
         try {
@@ -46,7 +46,6 @@ const HomeScreen = () => {
         subscription = bleManager.onStateChange((state) => {
             if (state === 'PoweredOn') {
                 console.log('bluetooth ON');
-                startAdvertising();
                 setBluetoothOn(true)
                 if (Platform.OS === 'android') {
                     const permission = requestLocationPermission();
@@ -73,70 +72,8 @@ const HomeScreen = () => {
         }, true)
     }
 
-    const startAdvertising = async () => {
-        // TODO: Define where to define the uuid
-        const serviceUUID = '55c14520-9b41-4e13-a229-e29059c00e47';
-        BLEPeripheral.addService(serviceUUID, false);
-        BLEPeripheral.addCharacteristicToService(
-          serviceUUID,
-          serviceUUID,
-          128,
-          128,
-          '',
-        );
-        if (await BLEPeripheral.isAdvertising()) {
-            return;
-        }
-        BLEPeripheral.sendNotificationToDevices(serviceUUID, serviceUUID, "JJKoh");
-        BLEPeripheral.setName("JunTest");
-        BLEPeripheral.start()
-          .then(res => {
-            // Success
-            console.log("Successful")
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      };
-
     const beginBLEScan = () => {
-        console.log('scan START')
-        bleManager.startDeviceScan(null, null, async (error, device) => {
-            if (error) {
-                console.log('BLE scan error', error)
-                if (error.errorCode === 601) {
-                    console.log('location OFF')
-                    setLocationOn(false)
-                }
-                return
-            }
-            else {
-                if (!locationOn) {
-                    console.log('location ON')
-                    setLocationOn(true)
-                }
-                if (!devicesScanned.includes(device.name)) {
-                    setDevicesScanned([...devicesScanned, device.name]);
-                }
-                console.log('scan DEVICE', device.id, device.name, devicesScanned);
-                // if (devicesScanned.length > 0) {
-                //     if (devicesScanned.some(dvc => dvc.id === device.id)) {
-                //         bleManager.stopDeviceScan()
-                //         connectToBLEDevice(device)
-                //     }
-                // }
-                // else {
-                //     console.log('scan DEVICE', device.id)
-                //     const devices = [...devicesScanned]
-                //     devices.push(device)
-                //     setDevicesScanned(devices)
-                // }
-            }
-            // if (POSSIBLE_DEVICE_NAMES.includes(device.name)) {
-            // bleManager.stopDeviceScan()
-            // connectToBLEDevice(device)
-            // }
-        })
+        return;
     }
 
     const connectToBLEDevice = async device => {

@@ -6,10 +6,10 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { Navigator } from '@routes'
 import { store, persistor } from '@store'
 
-import backgroundTask from './utils/backgroundTask';
+// import backgroundTask from './utils/backgroundTask';
 
 const App = () => {
-  backgroundTask(); // TODO
+  // backgroundTask(); // TODO
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>

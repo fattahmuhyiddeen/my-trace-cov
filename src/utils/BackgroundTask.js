@@ -5,7 +5,7 @@ import BLEPeripheral from 'react-native-ble-peripheral';
 const manager = new BleManager();
 
 // Note - backgroundtimer might only work in android
-const scanDevice = (timeout = 1000) => {
+const scanDevice = (timeout = 10000) => {
   console.log('ScanDevice');
   const scannedDevices = new Set();
   return new Promise((resolve, reject) => {
@@ -30,7 +30,6 @@ const scanDevice = (timeout = 1000) => {
 
     // Start scanning.
     manager.startDeviceScan(null, null, (error, scannedDevice) => {
-      var _a;
       if (error != null) {
         clearSubscriptions();
         reject(error);
@@ -46,17 +45,18 @@ const startAdvertise = async (serviceUUID, name) => {
   console.log('StartAdvertising');
   if (await BLEPeripheral.isAdvertising()) return Promise.resolve('Is advertising');
   BLEPeripheral.addService(serviceUUID, false);
-  BLEPeripheral.addCharacteristicToService(serviceUUID, serviceUUID, 128, 128, '');
+  BLEPeripheral.addCharacteristicToService(serviceUUID, serviceUUID, 1, 2, '');
   BLEPeripheral.setName(name);
   return BLEPeripheral.start();
 };
 
 const uuidDummy = '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d';
-const scheduleBackgroundProcessingTask = async (serviceUUID=uuidDummy, name='TraceCov') => {
-  const scanDeviceTimer = 5000;
+const runBackgroundTask = async (serviceUUID=uuidDummy, name='TraceCov') => {
+  const scanDeviceTimer = 10000;
 
   // BackgroundTimer only runs once - consistent
-  BLEPeripheral.stop() // just to make sure everything is stopped here
+  manager.stopDeviceScan();
+  if (await BLEPeripheral.isAdvertising()) BLEPeripheral.stop();
   (async function() {
     BackgroundTimer.runBackgroundTimer(() => {
       // TODO: scanDevice response should be written to persistent storage
@@ -67,8 +67,14 @@ const scheduleBackgroundProcessingTask = async (serviceUUID=uuidDummy, name='Tra
   // console.log(BackgroundTimer);
 };
 
-export default async () => {
-  // if backgroundtimer running, do nothing
-  scheduleBackgroundProcessingTask();
-  // BackgroundTimer.stopBackgroundTimer(); //after this call all code on background stop run.
-};
+export default class BackgroundTask {
+  static isRunning = false;
+
+  static scheduleBackgroundProcessingTask() {
+    if(BackgroundTask.isRunning) {
+      return;
+    }
+    BackgroundTask.isRunning = true; // make this to true
+    runBackgroundTask();
+  }
+}
