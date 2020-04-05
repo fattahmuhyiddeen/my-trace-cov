@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import storage from '@react-native-firebase/storage';
 
-export const uploadScannedDevicesDataPast21Days = async (userUUID) => {
+export const uploadScannedDevicesDataPast21Days = async () => {
   console.log('uploadScannedDevicesDataPast21Days');
+  const userUUID = await AsyncStorage.getItem('serviceUUID');
   const storagePrefix = 'user_contacts';
   const now = new Date();
-
   // start from 1 (yesterday), does not include today
   const daysAgo = 21;
   const numDaysAgo = [...Array(daysAgo).keys()].map(i => i + 1); // TODO: make sure this is + 1
@@ -19,24 +19,20 @@ export const uploadScannedDevicesDataPast21Days = async (userUUID) => {
     const dateAgo = dateDaysAgo.toISOString().split('T')[0];
     const history = await AsyncStorage.getItem(dateAgo);
     const parsedHistory = history? JSON.parse(history) : []; // need to parse here
-
     historyContents.push(JSON.stringify({
       date: dateAgo,
       userUUID: userUUID,
       contacts: parsedHistory,
     }));
   }));
-
   const dateStart = new Date();
   dateStart.setDate(now.getDate() - daysAgo);
   const dateEnd = new Date();
   dateEnd.setDate(now.getDate() - 1);
   const refName = `/${storagePrefix}/${userUUID}-${dateStart.toISOString().split('T')[0]}-${dateEnd.toISOString().split('T')[0]}.json`;
   const ref = storage().ref(refName);
-
   // convert json object into blob for upload purpose
   const blobJSON = new Blob([historyContents.join('\n')], { type: 'application/json', endings: '\n' });
-
   const putRes = await ref.put(blobJSON);
   console.log({putRes});
   return true;

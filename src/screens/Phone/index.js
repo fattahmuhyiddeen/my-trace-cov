@@ -81,6 +81,7 @@ const PhoneScreen = () => {
                 .confirm(otpText)
                 .then(result => {
                     // console.log('handleVerifyCode result', result)
+                    onCreateAccount(result.uid);
                 })
                 .catch(error => {
                     console.log('handleVerifyCode error', error)
@@ -107,14 +108,6 @@ const PhoneScreen = () => {
             })
     }
 
-    const onAuthStateChanged = () => {
-        auth().onAuthStateChanged((user) => {
-            if (user) {
-                onCreateAccount(user.uid)
-            }
-        })
-    }
-
     useEffect(() => {
         UUIDGenerator.getRandomUUID()
             .then((uuid) => {
@@ -122,14 +115,6 @@ const PhoneScreen = () => {
                 AsyncStorage.setItem('serviceUUID', uuid)
             })
     }, [])
-
-    useEffect(() => {
-        // auth().signOut()
-        const subscriber = onAuthStateChanged()
-        return () => {
-            subscriber
-        }
-    }, [phoneNo, onAuthStateChanged])
 
     if (confirmResult) {
         return (

@@ -19,8 +19,8 @@ const VerifyScreen = (props) => {
                 .then((confirmResult) => {
                     console.log(confirmResult);
                     // upload file
-                    uploadScannedDevicesDataPast21Days('AIOSHDOIASHDIOASHDOIAHSIOD')
-                    .then(res => alert('Success'));``
+                    uploadScannedDevicesDataPast21Days()
+                        .then(res => alert('Success'));``
                 })
                 .catch((err) => {
                     console.log(err);
