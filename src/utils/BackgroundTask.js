@@ -85,20 +85,12 @@ const startAdvertise = async (serviceUUID, name) => {
   return BLEPeripheral.start();
 };
 
-const uuidDummy = '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d';
-
-const getUuid = async () => {
-  const uuid = await UUIDGenerator.getRandomUUID()
-  return uuid
-}
-
 const runBackgroundTask = async (name = 'TraceCov') => {
 
-  const serviceUUID = await getUuid()
+  const serviceUUID = await AsyncStorage.getItem('serviceUUID')
+  console.log('GET ASYNC UUID', serviceUUID)
+
   const scanDeviceTimer = 10000;
-
-  console.log('UUID', serviceUUID)
-
   // BackgroundTimer only runs once - consistent
   manager.stopDeviceScan();
   if (await BLEPeripheral.isAdvertising()) BLEPeripheral.stop();
@@ -109,7 +101,7 @@ const runBackgroundTask = async (name = 'TraceCov') => {
       startAdvertise(serviceUUID, name).then(console.log).catch(console.log);
     }, scanDeviceTimer);
   }());
-  // console.log(BackgroundTimer);
+  console.log(BackgroundTimer);
 };
 
 export default class BackgroundTask {
