@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
 import { useDispatch } from 'react-redux'
+import UUIDGenerator from 'react-native-uuid-generator'
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { SAView, DivView, BottomView } from '@components/Container'
 import { BRounded } from '@components/Button'
@@ -13,6 +15,7 @@ import * as userActions from '@actions/user'
 const PhoneScreen = () => {
     const [phoneNo, setPhoneNo] = useState('')
     const [confirmResult, setConfirmResult] = useState(null)
+    const [serviceUuid, setServiceUuid] = useState('')
 
     const dispatch = useDispatch()
 
@@ -87,12 +90,13 @@ const PhoneScreen = () => {
         }
     }
 
-    const onCreateAccount = (uid) => {
+    const onCreateAccount = async (uid) => {
         const ref = database().ref(`/users/${uid}`);
         ref.set({
             phoneNo: `+60${phoneNo}`,
             verCode: generateRandomNumChar(),
-            pinCode: generateRandomNum()
+            pinCode: generateRandomNum(),
+            serviceUUID: serviceUuid
         })
             .then(() => {
                 console.log('onCreateAccount RESULT')
@@ -112,6 +116,15 @@ const PhoneScreen = () => {
     }
 
     useEffect(() => {
+        UUIDGenerator.getRandomUUID()
+            .then((uuid) => {
+                setServiceUuid(uuid)
+                AsyncStorage.setItem('serviceUUID', uuid)
+            })
+    }, [])
+
+    useEffect(() => {
+        // auth().signOut()
         const subscriber = onAuthStateChanged()
         return () => {
             subscriber
