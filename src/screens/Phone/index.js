@@ -62,7 +62,7 @@ const PhoneScreen = () => {
     //                 confirmResult
     //                     .confirm('123456')
     //                     .then(user => {
-    //                         // console.log('handleVerifyCode user', user)
+    //                         console.log('handleVerifyCode user', user)
     //                     })
     //                     .catch(error => {
     //                         console.log('handleVerifyCode error', error)
@@ -108,6 +108,21 @@ const PhoneScreen = () => {
                 console.log('onCreateAccount ERROR', error)
             })
     }
+    
+    const onAuthStateChanged = () => {
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                onCreateAccount(user.uid)
+            }
+        })
+    }
+
+    useEffect(() => {
+        const subscriber = onAuthStateChanged()
+        return () => {
+            subscriber
+        }
+    }, [phoneNo, onAuthStateChanged])
 
     useEffect(() => {
         UUIDGenerator.getRandomUUID()

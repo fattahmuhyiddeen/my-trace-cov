@@ -11,6 +11,10 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.himelbrand.ble.peripheral.RNBLEPackage;
+import android.content.IntentFilter;
+import io.rumors.reactnativesettings.RNSettingsPackage;
+import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
+import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -47,6 +51,8 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    registerReceiver(new GpsLocationReceiver(), new IntentFilter("android.location.PROVIDERS_CHANGED"));
+    registerReceiver(new AirplaneModeReceiver(), new IntentFilter("android.intent.action.AIRPLANE_MODE"));
   }
 
   /**

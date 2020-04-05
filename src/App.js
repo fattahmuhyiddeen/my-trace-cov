@@ -10,6 +10,7 @@ import { store, persistor } from '@store'
 
 const App = () => {
   // backgroundTask(); // TODO
+  console.disableYellowBox = true;
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
