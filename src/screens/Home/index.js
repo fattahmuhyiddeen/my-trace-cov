@@ -85,12 +85,11 @@ const HomeScreen = () => {
           128,
           '',
         );
-        if (BLEPeripheral.isAdvertising) {
-          BLEPeripheral.stop();
+        if (await BLEPeripheral.isAdvertising()) {
+            return;
         }
         BLEPeripheral.sendNotificationToDevices(serviceUUID, serviceUUID, "JJKoh");
         BLEPeripheral.setName("JunTest");
-
         BLEPeripheral.start()
           .then(res => {
             // Success
@@ -211,17 +210,17 @@ const HomeScreen = () => {
 
     const removeSubscription = () => {
         console.log('subscription REMOVE')
-        // bleManager.destroy()
-        // subscription.remove()
+        bleManager.destroy()
+        subscription.remove()
     }
 
 
-    // useEffect(() => {
-    //     initializeBluetooth()
-    //     return () => {
-    //         removeSubscription()
-    //     }
-    // }, [initializeBluetooth, removeSubscription])
+    useEffect(() => {
+        initializeBluetooth()
+        return () => {
+            removeSubscription()
+        }
+    }, [initializeBluetooth, removeSubscription])
 
     return (
         <SAView>

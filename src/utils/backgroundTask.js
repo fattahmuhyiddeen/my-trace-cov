@@ -44,7 +44,6 @@ const scanDevice = (timeout = 1000) => {
 
 const startAdvertise = async (serviceUUID, name) => {
   console.log('StartAdvertising');
-  BLEPeripheral.stop()
   if (await BLEPeripheral.isAdvertising()) return Promise.resolve('Is advertising');
   BLEPeripheral.addService(serviceUUID, false);
   BLEPeripheral.addCharacteristicToService(serviceUUID, serviceUUID, 128, 128, '');
@@ -56,6 +55,8 @@ const uuidDummy = '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d';
 const scheduleBackgroundProcessingTask = async (serviceUUID=uuidDummy, name='TraceCov') => {
   const scanDeviceTimer = 5000;
 
+  // BackgroundTimer only runs once - consistent
+  BLEPeripheral.stop() // just to make sure everything is stopped here
   (async function() {
     BackgroundTimer.runBackgroundTimer(() => {
       // TODO: scanDevice response should be written to persistent storage
@@ -63,7 +64,6 @@ const scheduleBackgroundProcessingTask = async (serviceUUID=uuidDummy, name='Tra
       startAdvertise(serviceUUID, name).then(console.log).catch(console.log);
     }, scanDeviceTimer);
   }());
-
   // console.log(BackgroundTimer);
 };
 
