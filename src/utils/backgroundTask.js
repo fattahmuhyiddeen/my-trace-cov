@@ -60,7 +60,7 @@ const scheduleBackgroundProcessingTask = async (serviceUUID=uuidDummy, name='Tra
   (async function() {
     BackgroundTimer.runBackgroundTimer(() => {
       // TODO: scanDevice response should be written to persistent storage
-      scanDevice().then(console.log);
+      scanDevice().then(console.log).catch(console.log);
       startAdvertise(serviceUUID, name).then(console.log).catch(console.log);
     }, scanDeviceTimer);
   }());
