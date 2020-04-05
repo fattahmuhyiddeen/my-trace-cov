@@ -2,19 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import database from '@react-native-firebase/database'
 import auth from '@react-native-firebase/auth'
+import { uploadScannedDevicesDataPast21Days } from '@utils/storageHelper'
 
 import { SAView, DivView, BottomView } from '@components/Container'
 import { BRounded } from '@components/Button'
 import { TICode } from '@components/TextInput'
 
-const PinScreen = () => {
+const PinScreen = (props) => {
 
     const [codeText, setCodeText] = useState('')
     const [pinCode, setPinCode] = useState('')
 
     const handlePinCode = () => {
         if (codeText === pinCode) {
-            alert("Log submitted successfully. Thank you for your cooperation.")
+            uploadScannedDevicesDataPast21Days()
+                .then(res => {
+                    alert("Log submitted successfully. Thank you for your cooperation.")
+                    props.navigation.goBack()
+                })
         }
         else {
             alert("Wrong pin. Try again.")

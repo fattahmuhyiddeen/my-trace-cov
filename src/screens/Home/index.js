@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Platform, PermissionsAndroid, NativeModules } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { BleManager, Service, Characteristic } from 'react-native-ble-plx'
-// import { request, PERMISSIONS, RESULTS } from 'react-native-permissions'
+import auth from '@react-native-firebase/auth'
+
 import { SAView } from '@components/Container'
 import { BUnderline } from '@components/Button'
 import Colors from '@utils/colors'
@@ -49,6 +50,7 @@ const HomeScreen = () => {
                 if (Platform.OS === 'android') {
                     const permission = requestLocationPermission();
                     if (permission) {
+                        
                     }
                     else {
                         console.log("location OFF")
@@ -147,9 +149,9 @@ const HomeScreen = () => {
                 </View>
                 <View style={{ height: 50 }} />
                 <Text style={styles.text3}>Make sure all features are turned on to run this app properly.</Text>
-                <Text style={styles.text3}>
+                {/* <Text style={styles.text3}>
                     Today unique contacts: {uniqueContactsNum}
-                </Text>
+                </Text> */}
             </View>
         </SAView >
     )
