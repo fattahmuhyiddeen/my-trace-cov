@@ -15,14 +15,11 @@ const setScannedDevices = async (scannedDevices) => {
   const key = getTodayDate();
   try {
     const existingValues = await AsyncStorage.getItem(key);
-    console.log({existingValues});
     if (existingValues === null) {
       // set here
       return AsyncStorage.setItem(key, JSON.stringify(scannedDevices));
     }
-    console.log({existingValues});
     const newSet = new Set(JSON.parse(existingValues)); // make sure this is array
-    console.log(newSet);
     scannedDevices.forEach((d) => newSet.add(d));
     return AsyncStorage.setItem(key, JSON.stringify(Array.from(newSet)));
   } catch (err) {
@@ -65,7 +62,7 @@ const scanDevice = (timeout = 10000) => {
       if (scannedDevice !== null) {
         console.log(scannedDevice.name, scannedDevice.serviceUUIDs);
         // TODO: make sure serviceUUIDs make sense
-        const dummyList = [Math.random()];
+        const dummyList = [Math.random().toString()];
         console.log({scannedDevices});
         dummyList.forEach((v) => scannedDevices.add(v));
         // if (scannedDevice.serviceUUIDs !== null) {
