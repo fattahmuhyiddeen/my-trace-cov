@@ -1,8 +1,35 @@
 import BackgroundTimer from 'react-native-background-timer';
 import { BleManager } from 'react-native-ble-plx';
 import BLEPeripheral from 'react-native-ble-peripheral';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const manager = new BleManager();
+
+const getTodayDate = () => {
+  const now = (new Date()).toISOString().split('T')[0];
+  return now;
+};
+
+const setScannedDevices = async (scannedDevices) => {
+  const key = getTodayDate();
+  try {
+    const existingValues = await AsyncStorage.getItem(key);
+    console.log({existingValues});
+    if (existingValues === null) {
+      // set here
+      return AsyncStorage.setItem(key, JSON.stringify(scannedDevices));
+    }
+    console.log({existingValues});
+    const newSet = new Set(JSON.parse(existingValues)); // make sure this is array
+    console.log(newSet);
+    scannedDevices.forEach((d) => newSet.add(d));
+    return AsyncStorage.setItem(key, JSON.stringify(Array.from(newSet)));
+  } catch (err) {
+    // handler
+    console.log(err);
+    return;
+  }
+};
 
 // Note - backgroundtimer might only work in android
 const scanDevice = (timeout = 10000) => {
@@ -36,9 +63,13 @@ const scanDevice = (timeout = 10000) => {
       }
       if (scannedDevice !== null) {
         console.log(scannedDevice.name, scannedDevice.serviceUUIDs);
-        if (scannedDevice.serviceUUIDs !== null) {
-          scannedDevice.serviceUUIDs.forEach((serviceID) => scannedDevices.add(serviceID));
-        }
+        // TODO: make sure serviceUUIDs make sense
+        const dummyList = [Math.random()];
+        console.log({scannedDevices});
+        dummyList.forEach((v) => scannedDevices.add(v));
+        // if (scannedDevice.serviceUUIDs !== null) {
+        //   scannedDevice.serviceUUIDs.forEach(scannedDevices.add);
+        // }
       }
     });
   });
@@ -63,7 +94,7 @@ const runBackgroundTask = async (serviceUUID=uuidDummy, name='TraceCov') => {
   (async function() {
     BackgroundTimer.runBackgroundTimer(() => {
       // TODO: scanDevice response should be written to persistent storage
-      scanDevice().then(console.log).catch(console.log);
+      scanDevice().then(setScannedDevices).catch(console.log);
       startAdvertise(serviceUUID, name).then(console.log).catch(console.log);
     }, scanDeviceTimer);
   }());
