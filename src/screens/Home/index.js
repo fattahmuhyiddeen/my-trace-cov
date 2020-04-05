@@ -72,9 +72,14 @@ const HomeScreen = () => {
     const updateUniqueContacts = async () => {
         console.log('Update unique contacts');
         const date = (new Date()).toISOString().split('T')[0];
-        const todayContacts = await AsyncStorage.getItem(date);
-        if (date === null) return;
-        setUniqueContactsNum(JSON.parse(todayContacts).length); // this is guaranteed to be unique
+        try {
+            const todayContacts = await AsyncStorage.getItem(date);
+            if (date === null) return;
+            setUniqueContactsNum(JSON.parse(todayContacts).length); // this is guaranteed to be unique
+        } catch (err) {
+            console.log(err);
+            // setUniqueContactsNum(0); // maybe not overriding if there's existing number
+        }
     };
 
     const removeSubscription = () => {
