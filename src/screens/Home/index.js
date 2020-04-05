@@ -14,6 +14,7 @@ const HomeScreen = () => {
     const [bluetoothOn, setBluetoothOn] = useState(false)
     const [locationOn, setLocationOn] = useState(false)
     const [devicesScanned, setDevicesScanned] = useState([])
+    const [uniqueContactsNum, setUniqueContactsNum] = useState(0);
 
     let bleManager
     let subscription
@@ -68,6 +69,14 @@ const HomeScreen = () => {
         }, true)
     }
 
+    const updateUniqueContacts = async () => {
+        console.log('Update unique contacts');
+        const date = (new Date()).toISOString().split('T')[0];
+        const todayContacts = await AsyncStorage.getItem(date);
+        if (date === null) return;
+        setUniqueContactsNum(JSON.parse(todayContacts).length); // this is guaranteed to be unique
+    };
+
     const removeSubscription = () => {
         console.log('subscription REMOVE');
         bleManager.destroy();
@@ -76,11 +85,12 @@ const HomeScreen = () => {
 
 
     useEffect(() => {
-        initializeBluetooth()
+        initializeBluetooth();
+        updateUniqueContacts();
         return () => {
             removeSubscription()
         }
-    }, [initializeBluetooth, removeSubscription])
+    }, [initializeBluetooth, updateUniqueContacts, removeSubscription])
 
     return (
         <SAView>
@@ -93,8 +103,9 @@ const HomeScreen = () => {
                         color='black'
                         size={30}
                         onPress={() => {
-                            removeSubscription()
-                            initializeBluetooth()
+                            removeSubscription();
+                            initializeBluetooth();
+                            updateUniqueContacts();
                         }}
                     />
                 </View>
@@ -131,6 +142,9 @@ const HomeScreen = () => {
                 </View>
                 <View style={{ height: 50 }} />
                 <Text style={styles.text3}>Make sure all features are turned on to run this app properly.</Text>
+                <Text style={styles.text3}>
+                    Today unique contacts: {uniqueContactsNum}
+                </Text>
             </View>
         </SAView >
     )
@@ -150,6 +164,7 @@ const styles = StyleSheet.create({
     },
     text3: {
         fontSize: 16,
+        padding: 4,
     },
     rowContainer: {
         flexDirection: 'row',
