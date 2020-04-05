@@ -8,6 +8,7 @@ import { BUnderline } from '@components/Button'
 import Colors from '@utils/colors'
 import BLEPeripheral from 'react-native-ble-peripheral';
 import BackgroundApp from '../../utils/BackgroundTask';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const HomeScreen = () => {
     const [bluetoothOn, setBluetoothOn] = useState(false)
@@ -16,9 +17,6 @@ const HomeScreen = () => {
 
     let bleManager
     let subscription
-
-    let characteristicWithResponseListener
-    let characteristicWithoutResponseListener
 
     BackgroundApp.scheduleBackgroundProcessingTask();
 
@@ -50,7 +48,6 @@ const HomeScreen = () => {
                 if (Platform.OS === 'android') {
                     const permission = requestLocationPermission();
                     if (permission) {
-                        beginBLEScan()
                     }
                     else {
                         console.log("location OFF")
@@ -58,7 +55,6 @@ const HomeScreen = () => {
                     }
                 }
                 else if (Platform.OS === 'ios') {
-                    beginBLEScan()
                 }
             }
             else if (state === 'PoweredOff') {
@@ -72,82 +68,10 @@ const HomeScreen = () => {
         }, true)
     }
 
-    const beginBLEScan = () => {
-        return;
-    }
-
-    const connectToBLEDevice = async device => {
-        console.log('Connecting to BLE device')
-        // Connect to our BLE device and save it to redux state
-        let connectedBLEDevice = await device.connect()
-        connectedBLEDevice.onDisconnected(handleBLEDeviceDisconnect)
-
-        // Discover all services and characteristics of our BLE device
-        await connectedBLEDevice.discoverAllServicesAndCharacteristics()
-
-        // Save all BLE device services to state
-        let connectedBLEDeviceServices = await connectedBLEDevice.services()
-        connectedBLEDeviceServices = connectedBLEDeviceServices.map(service => new Service(service, bleManager))
-        // console.log({connectedBLEDeviceServices});
-
-        // Save all BLE device characteristics to state
-        let connectedBLEDeviceCharacteristics = await connectedBLEDeviceServices[0].characteristics()
-        connectedBLEDeviceCharacteristics = connectedBLEDeviceCharacteristics.map(characteristic => new Characteristic(characteristic, bleManager))
-
-        // Handle a base64 encoded message from our BLE device's writable characteristic
-        characteristicWithResponseListener = connectedBLEDeviceCharacteristics[0].monitor(handleCharacteristicWithResponse)
-        characteristicWithoutResponseListener = connectedBLEDeviceCharacteristics[1].monitor(handleCharacteristicWithoutResponse)
-
-        // Send a base64 encoded message to our BLE device's writable characteristic
-        // this.props.actions.writeWithResponseToBLEDevice(`Hello from ${Platform.OS === 'ios' ? 'iPhone' : 'Android'}!`)
-    }
-
-    const handleCharacteristicWithResponse = (error, characteristic) => {
-        if (error && error.code !== 201) { // 201 means device was disconnected
-            console.log('BLE receive error', error)
-            handleBLEDeviceDisconnect();
-            return
-        }
-        // Read our BLE device's writable characteristic's base64 encoded value
-        let response = JSON.parse(base64.decode(characteristic.value))
-        if (response.ok) {
-            handleBLEResponse(response, true)
-        }
-        console.log('handleCharacteristicWithResponse', response.value)
-    }
-
-    const handleCharacteristicWithoutResponse = (error, characteristic) => {
-        if (error && error.code !== 201) { // 201 means device was disconnected
-            console.log('BLE receive error', error)
-            handleBLEDeviceDisconnect();
-            return
-        }
-        // Read our BLE device's writable characteristic's base64 encoded value
-        let response = JSON.parse(base64.decode(characteristic.value))
-        if (response.ok) {
-            handleBLEResponse(response, false)
-        }
-        console.log('handleCharacteristicWithoutResponse', response.value)
-    }
-
-    const handleBLEResponse = (response, withResponse) => {
-        switch (response.type) {
-            default:
-                return console.log(`👋🏻 from BLE device with${!withResponse ? 'out' : ''} response:`, response)
-        }
-    }
-
-    const handleBLEDeviceDisconnect = () => {
-        console.log("BLE device disconnected! Resetting bluetooth state and restarting scan.")
-        characteristicWithResponseListener.remove()
-        characteristicWithoutResponseListener.remove()
-        beginBLEScan()
-    }
-
     const removeSubscription = () => {
-        console.log('subscription REMOVE')
-        bleManager.destroy()
-        subscription.remove()
+        console.log('subscription REMOVE');
+        bleManager.destroy();
+        subscription.remove();
     }
 
 
