@@ -37,36 +37,13 @@ const PhoneScreen = () => {
         setConfirmResult(null)
     }
 
-    // const handleSendCode = () => {
-    //     if (validatePhoneNumber()) {
-    //         auth()
-    //             .signInWithPhoneNumber(`+60${phoneNo}`)
-    //             .then(confirmResult => {
-    //                 console.log('handleSendCode result', confirmResult)
-    //                 setConfirmResult(confirmResult)
-    //             })
-    //             .catch(error => {
-    //                 console.log('handleSendCode error', error)
-    //             })
-    //     } else {
-    //         alert('Invalid phone number.')
-    //     }
-    // }
-
     const handleSendCode = () => {
         if (validatePhoneNumber()) {
             auth()
                 .signInWithPhoneNumber(`+60${phoneNo}`)
                 .then(confirmResult => {
-                    // console.log('handleSendCode result', confirmResult)
-                    confirmResult
-                        .confirm('123456')
-                        .then(user => {
-                            console.log('handleVerifyCode user', user)
-                        })
-                        .catch(error => {
-                            console.log('handleVerifyCode error', error)
-                        })
+                    console.log('handleSendCode result', confirmResult)
+                    setConfirmResult(confirmResult)
                 })
                 .catch(error => {
                     console.log('handleSendCode error', error)
@@ -75,6 +52,29 @@ const PhoneScreen = () => {
             alert('Invalid phone number.')
         }
     }
+
+    // const handleSendCode = () => {
+    //     if (validatePhoneNumber()) {
+    //         auth()
+    //             .signInWithPhoneNumber(`+60${phoneNo}`)
+    //             .then(confirmResult => {
+    //                 // console.log('handleSendCode result', confirmResult)
+    //                 confirmResult
+    //                     .confirm('123456')
+    //                     .then(user => {
+    //                         console.log('handleVerifyCode user', user)
+    //                     })
+    //                     .catch(error => {
+    //                         console.log('handleVerifyCode error', error)
+    //                     })
+    //             })
+    //             .catch(error => {
+    //                 console.log('handleSendCode error', error)
+    //             })
+    //     } else {
+    //         alert('Invalid phone number.')
+    //     }
+    // }
 
     const handleVerifyCode = (otpText) => {
         if (otpText.length == 6) {
