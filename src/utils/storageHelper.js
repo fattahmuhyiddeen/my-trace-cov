@@ -8,7 +8,7 @@ export const uploadScannedDevicesDataPast21Days = async () => {
   const now = new Date();
   // start from 1 (yesterday), does not include today
   const daysAgo = 21;
-  const numDaysAgo = [...Array(daysAgo).keys()].map(i => i + 1); // TODO: make sure this is + 1
+  const numDaysAgo = [...Array(daysAgo).keys()].map(i => i); // TODO: make sure this is + 1 to exclude today
   // getting the data into "raw" object
   // [date, userUUID, contacts]
   const historyContents = [];
