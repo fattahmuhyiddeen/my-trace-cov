@@ -36,7 +36,7 @@ const scanDevice = (timeout = 10000) => {
         reject(error);
       }
       if (scannedDevice !== null) {
-        console.log(scannedDevice.name, scannedDevice.serviceUUIDs);
+        // console.log(scannedDevice.name, scannedDevice.serviceUUIDs);
         if (scannedDevice.serviceUUIDs !== null) {
           scannedDevice.serviceUUIDs.forEach((serviceID) => scannedDevices.add(serviceID));
         }
@@ -74,8 +74,20 @@ const runBackgroundTask = async (name = 'TraceCov') => {
   (async function () {
     BackgroundTimer.runBackgroundTimer(() => {
       // TODO: scanDevice response should be written to persistent storage
-      scanDevice().then(console.log).catch(console.log);
-      startAdvertise(serviceUUID, name).then(console.log).catch(console.log);
+      scanDevice()
+        .then((res) => {
+          console.log('scan device RES', res)
+        })
+        .catch((err) => {
+          console.log('scan device ERROR', err)
+        });
+      startAdvertise(serviceUUID, name)
+        .then((res) => {
+          console.log('start advertise RES', res)
+        })
+        .catch((err) => {
+          console.log('start advertise ERROR', err)
+        });
     }, scanDeviceTimer);
   }());
   // console.log(BackgroundTimer);
