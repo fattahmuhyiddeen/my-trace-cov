@@ -9,8 +9,8 @@ export const Navigator = () => {
 
     return (
         <NavigationContainer>
-            {!isAuth && <MainNavigator />}
-            {/* {!isAuth && <AuthNavigator />} */}
+            {isAuth && <MainNavigator />}
+            {!isAuth && <AuthNavigator />}
         </NavigationContainer>
     )
 }

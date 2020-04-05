@@ -20,11 +20,11 @@ export const uploadScannedDevicesDataPast21Days = async (userUUID) => {
     const history = await AsyncStorage.getItem(dateAgo);
     const parsedHistory = history? JSON.parse(history) : []; // need to parse here
 
-    historyContents.push({
+    historyContents.push(JSON.stringify({
       date: dateAgo,
       userUUID: userUUID,
       contacts: parsedHistory,
-    });
+    }));
   }));
 
   const dateStart = new Date();
@@ -35,7 +35,7 @@ export const uploadScannedDevicesDataPast21Days = async (userUUID) => {
   const ref = storage().ref(refName);
 
   // convert json object into blob for upload purpose
-  const blobJSON = new Blob([JSON.stringify(historyContents)], { type: 'application/json' });
+  const blobJSON = new Blob([historyContents.join('\n')], { type: 'application/json', endings: '\n' });
 
   const putRes = await ref.put(blobJSON);
   console.log({putRes});
