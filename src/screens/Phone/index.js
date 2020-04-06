@@ -108,7 +108,7 @@ const PhoneScreen = () => {
                 console.log('onCreateAccount ERROR', error)
             })
     }
-    
+
     const onAuthStateChanged = () => {
         auth().onAuthStateChanged((user) => {
             if (user) {
@@ -127,7 +127,7 @@ const PhoneScreen = () => {
     useEffect(() => {
         UUIDGenerator.getRandomUUID()
             .then((uuid) => {
-                const formattedUUID = `${config.serviceUUIDPrefix}${uuid.substring(8,36)}`;
+                const formattedUUID = `${config.serviceUUIDPrefix}${uuid.substring(8, 36)}`;
                 setServiceUuid(formattedUUID);
                 AsyncStorage.setItem('serviceUUID', formattedUUID);
             })
@@ -143,7 +143,8 @@ const PhoneScreen = () => {
     }
 
     return (
-        <SAView>
+
+        <SAView avoidingKeyboard={true}>
             <DivView>
                 <View style={styles.mainContainer}>
                     <ScrollView>

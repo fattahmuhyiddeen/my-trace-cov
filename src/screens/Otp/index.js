@@ -23,7 +23,7 @@ const OtpScreen = (props) => {
     }
 
     return (
-        <SAView>
+        <SAView avoidingKeyboard={true}>
             <DivView>
                 <View style={styles.mainContainer}>
                     <Text style={styles.text1}>Enter OTP</Text>

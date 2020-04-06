@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 const DivView = (props) => {
     return (
-        <KeyboardAvoidingView behavior={Platform.Os == "ios" ? "padding" : "height"} style={styles.container}>
+        <View style={styles.container}>
             {props.children}
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 
