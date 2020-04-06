@@ -1,6 +1,0 @@
-module react_native_ble_peripheral {
-  umbrella header "react-native-ble-peripheral-umbrella.h"
-
-  export *
-  module * { export * }
-}

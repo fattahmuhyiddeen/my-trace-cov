@@ -366,11 +366,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 8N9XS7RESJ;
+						DevelopmentTeam = 66C2ARTY2B;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 8N9XS7RESJ;
+						DevelopmentTeam = 66C2ARTY2B;
 						LastSwiftMigration = 1140;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -789,7 +789,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 8N9XS7RESJ;
+				DEVELOPMENT_TEAM = 66C2ARTY2B;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -823,7 +823,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 8N9XS7RESJ;
+				DEVELOPMENT_TEAM = 66C2ARTY2B;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-serial/ios/RCTBluetoothSerial",
@@ -853,7 +853,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8N9XS7RESJ;
+				DEVELOPMENT_TEAM = 66C2ARTY2B;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -865,12 +865,13 @@
 				);
 				INFOPLIST_FILE = TraceCov/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.appfes.tracecov;
+				PRODUCT_BUNDLE_IDENTIFIER = my.gov.tracenow;
 				PRODUCT_NAME = TraceCov;
 				SWIFT_OBJC_BRIDGING_HEADER = "TraceCov-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -886,19 +887,20 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8N9XS7RESJ;
+				DEVELOPMENT_TEAM = 66C2ARTY2B;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-serial/ios/RCTBluetoothSerial",
 				);
 				INFOPLIST_FILE = TraceCov/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.appfes.tracecov;
+				PRODUCT_BUNDLE_IDENTIFIER = my.gov.tracenow;
 				PRODUCT_NAME = TraceCov;
 				SWIFT_OBJC_BRIDGING_HEADER = "TraceCov-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
