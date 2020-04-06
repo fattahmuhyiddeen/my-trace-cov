@@ -58,3 +58,4 @@ buck-out/
 android/fastlane/README.md
 ios/fastlane/README.md
 *.app.dSYM.zip
+*.hprof
