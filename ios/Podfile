@@ -59,11 +59,6 @@ target 'TraceCov' do
   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
   pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
 
-  target 'TraceCovTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
   use_native_modules!
 
   # Enables Flipper.
@@ -73,14 +68,5 @@ target 'TraceCov' do
   add_flipper_pods!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'TraceCov-tvOS' do
-  # Pods for TraceCov-tvOS
-
-  target 'TraceCov-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end
