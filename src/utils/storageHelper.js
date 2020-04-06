@@ -33,25 +33,26 @@ export const uploadScannedDevicesDataPast21Days = async () => {
     const dateAgo = dateDaysAgo.toISOString().split('T')[0];
     const history = await AsyncStorage.getItem(dateAgo);
     const parsedHistory = history ? JSON.parse(history) : []; // need to parse here
-    historyContents.push({
+    historyContents.push(JSON.stringify({
       date: dateAgo,
       userUUID: userUUID,
       contacts: parsedHistory,
-    });
+    }));
   }));
 
-  console.log('LOGS RESULT', historyContents)
-  uploadLogsToFB(historyContents)
+  // console.log('LOGS RESULT', historyContents)
+  // uploadLogsToFB(historyContents)
 
-  // const dateStart = new Date();
-  // dateStart.setDate(now.getDate() - daysAgo);
-  // const dateEnd = new Date();
-  // dateEnd.setDate(now.getDate() - 1);
-  // const refName = `/${storagePrefix}/${userUUID}-${dateStart.toISOString().split('T')[0]}-${dateEnd.toISOString().split('T')[0]}.json`;
-  // const ref = storage().ref(refName);
-  // // convert json object into blob for upload purpose
-  // const blobJSON = new Blob([historyContents.join('\n')], { type: 'application/json', endings: '\n' });
-  // const putRes = await ref.put(blobJSON);
-  // console.log({putRes});
+  const dateStart = new Date();
+  dateStart.setDate(now.getDate() - daysAgo);
+  const dateEnd = new Date();
+  dateEnd.setDate(now.getDate() - 1);
+  const refName = `/${storagePrefix}/${userUUID}-${dateStart.toISOString().split('T')[0]}-${dateEnd.toISOString().split('T')[0]}.json`;
+  const ref = storage().ref(refName);
+  // convert json object into blob for upload purpose
+  const blobJSON = new Blob([historyContents.join('\n')], { type: 'application/json', endings: '\n' });
+  const putRes = await ref.put(blobJSON);
+  console.log({ putRes });
   return true;
+
 };
