@@ -50,6 +50,9 @@
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>This app exchanges Bluetooth signals with nearby phones running the same app. These signals contain an anonymised ID, which is encrypted and changes continually to ensure your privacy.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app exchanges Bluetooth signals with nearby phones running the same app. These signals contain an anonymised ID, which is encrypted and changes continually to ensure your privacy.</string>
+	
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>
