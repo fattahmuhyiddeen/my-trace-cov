@@ -8,7 +8,7 @@ platform :android do
     gradle(task: "clean assembleRelease")
     firebase_app_distribution(
         app: "1:3198314753:android:8b1c71a1dbb33a7e201300",
-        release_notes: "Bug fix",
+        release_notes: "Add crashlytic",
         testers: testers,
         firebase_cli_path: "/usr/local/bin/firebase"
     )
